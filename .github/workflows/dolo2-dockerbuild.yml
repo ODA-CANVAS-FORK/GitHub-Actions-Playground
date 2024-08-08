@@ -20,9 +20,11 @@ jobs:
           ls -la dc || true
           echo $HOME
           ls -la $HOME
+          ls -la $HOME/.docker
                 
       - name: DoLo2-Action
-        uses: docker://ocfork/dolo2-action:latest
+        run: |
+          docker run -v$HOME:/SHOME ocfork/dolo2-action
     
       - run: |
           echo $PWD
@@ -30,4 +32,5 @@ jobs:
           ls -la dc || true
           echo $HOME
           ls -la $HOME
+          ls -la $HOME/.docker
                 
