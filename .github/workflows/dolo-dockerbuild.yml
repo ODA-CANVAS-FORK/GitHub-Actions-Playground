@@ -1,5 +1,5 @@
-name: Build and Push Dockerimage
-run-name: Build and Push Dockerimage
+name: DoLo Build and Push Dockerimage
+run-name: DoLo Build and Push Dockerimage
 on:
   workflow_dispatch:
   push:
