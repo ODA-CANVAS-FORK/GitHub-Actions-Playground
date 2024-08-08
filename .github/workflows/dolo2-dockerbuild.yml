@@ -1,0 +1,31 @@
+name: DoLo2 Build and Push Dockerimage
+run-name: DoLo2 Build and Push Dockerimage
+on:
+  workflow_dispatch:
+  push:
+    paths: 
+      - docker
+
+jobs:
+  dockerbuild-job:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - run: |
+          echo $PWD
+          ls -la
+          echo $HOME
+          ls -la $HOME
+                
+      - name: DoLo2-Action
+        uses: docker://ocfork/dolo2-action:latest
+    
+      - run: |
+          echo $PWD
+          ls -la
+          echo $HOME
+          ls -la $HOME
+                
