@@ -17,6 +17,7 @@ jobs:
       - run: |
           echo $PWD
           ls -la
+          ls -la docker
           echo $HOME
           ls -la $HOME
                 
@@ -26,6 +27,7 @@ jobs:
       - run: |
           echo $PWD
           ls -la
+          ls -la docker
           echo $HOME
           ls -la $HOME
                 
