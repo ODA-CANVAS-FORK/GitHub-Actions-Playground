@@ -16,9 +16,10 @@ jobs:
 
       - name: envs
         run: |
-          echo $GITHUB_ENV
-          ls $GITHUB_ENV
-          cat $GITHUB_ENV
+          echo $PWD
+          echo $HOME
+          cat $HOME/.docker/config.json
+          ls $HOME/work
       
       #- name: DoLo2-Action
       #  run: |
