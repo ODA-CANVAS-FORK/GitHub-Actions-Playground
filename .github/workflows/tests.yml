@@ -19,7 +19,19 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.ref }}
         repository: ${{ github.event.pull_request.head.repo.full_name }}
+
+
+    - name: get commit msg
+      id: commit_msg
+      run: |
+        message=$(git log -1 --format=oneline --pretty=format:"%s")
+        echo "::set-output name=commit_message::$message"
+        
+    - name: echo output
+      run: |
+        echo ${{ steps.commit_msg.outputs.commit_message }}
         
     - name: do tests
+      if: "!contains(steps.commit_msg.outputs.commit_message, '[skip tests]')"
       run: |
         echo executing the tests
