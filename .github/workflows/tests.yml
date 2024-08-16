@@ -47,4 +47,4 @@ jobs:
       if: "!steps.commit_msg.outputs.SKIPTESTS"
       run: |
         echo executing the tests
-        
+      
