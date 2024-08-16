@@ -40,20 +40,12 @@ jobs:
     if: "!needs.check_commit_message_job.outputs.SKIPTESTS"
 
     steps:
-    - name: show files
-      run: |
-        ls -la
-        
     - name: Checkout code
       uses: actions/checkout@v2
       with:
         ref: ${{ github.event.pull_request.head.ref }}
         repository: ${{ github.event.pull_request.head.repo.full_name }}
 
-    - name: show files
-      run: |
-        ls -la
-        
     - name: do tests
       run: |
         echo executing the tests
