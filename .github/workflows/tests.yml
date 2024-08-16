@@ -39,6 +39,7 @@ jobs:
     needs: check_commit_message_job    
     if: "!needs.check_commit_message_job.outputs.SKIPTESTS"
 
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
