@@ -31,7 +31,7 @@ jobs:
           echo "SKIPPING TESTS"
           echo "SKIPTESTS=1" >> $GITHUB_OUTPUT
         else
-          echo "SKIPTESTS=0" >> $GITHUB_OUTPUT
+          echo "SKIPTESTS=" >> $GITHUB_OUTPUT
         fi
         
     - name: echo output
