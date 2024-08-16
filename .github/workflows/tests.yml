@@ -12,6 +12,7 @@ jobs:
 
   check_commit_message_job:
     runs-on: ubuntu-latest
+    if: "!contains(github.event.pull_request.title, '[skip tests]')"
     outputs:
       SKIPTESTS: ${{ steps.check_msg.outputs.SKIPTESTS }}
     steps:
