@@ -25,13 +25,20 @@ jobs:
       id: commit_msg
       run: |
         message=$(git log -1 --format=oneline --pretty=format:"%s")
-        echo "::set-output name=commit_message::$message"
+        echo "GIT COMMIT MESSAGE: $message"
+        if echo $message | grep "\[skip tests\]" >/dev/null
+        then
+          echo "SKIPPING TESTS"
+          echo "SKIPTESTS=1" >> $GITHUB_OUTPUT
+        else
+          echo "SKIPTESTS=0" >> $GITHUB_OUTPUT
+        fi
         
     - name: echo output
       run: |
-        echo ${{ steps.commit_msg.outputs.commit_message }}
+        echo ${{ steps.commit_msg.outputs.SKIPTESTS }}
         
     - name: do tests
-      if: "!contains(steps.commit_msg.outputs.commit_message, '[skip tests]')"
+      if: steps.commit_msg.outputs.SKIPTESTS == '1'
       run: |
         echo executing the tests
