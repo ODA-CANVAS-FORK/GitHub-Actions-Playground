@@ -38,7 +38,13 @@ jobs:
       run: |
         echo ${{ steps.commit_msg.outputs.SKIPTESTS }}
         
-    - name: do tests
-      if: steps.commit_msg.outputs.SKIPTESTS == '1'
+    - name: do tests 1
+      if: steps.commit_msg.outputs.SKIPTESTS != 1
       run: |
         echo executing the tests
+
+    - name: do tests
+      if: "!steps.commit_msg.outputs.SKIPTESTS"
+      run: |
+        echo executing the tests
+        
