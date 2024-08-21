@@ -19,30 +19,49 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.ref }}
         repository: ${{ github.event.pull_request.head.repo.full_name }}
-        fetch-depth: 2
-    - name: check last changed files
-      id: check_skiptests_msg
+        fetch-depth: 2    # this is needed for getting the diff for the last commit
+
+    - name: check if last commit contains only prerelease suffix removals 
+      id: check_prereleasesuffixremoval
       shell: bash
       run: |
-        echo "ref: ${{ github.event.pull_request.head.ref }}"
-        echo "repository: ${{ github.event.pull_request.head.repo.full_name }}"
-        
         export CHANGED_FILES=$(git diff --name-only HEAD~1)
-        echo changed files: 
+        echo CHANGED FILES:
         echo $CHANGED_FILES
         if [ "$CHANGED_FILES" == "values.yaml" ]
         then
-          echo "only values.yaml were changed"
-          echo ---- RAW DIFF last commit ----
+          echo "only values.yaml was changed, checking changes"
+          echo "---- RAW DIFF last commit ----"
           git diff -w -U0 --color=always HEAD~1
-          git diff -w -U0 --color=never HEAD~1 
-          echo ---- OLD LINES ($ADD) ----
-          echo ---- NEW LINES ($REM) ----
-          echo ---- -------------------- ----
-        fi 
+          echo "---- -------------------- ----"
 
-        echo "SKIPPING TESTS"
-        echo "SKIPTESTS=1" >> $GITHUB_OUTPUT
+          export OLD_LINES=$(cat gitdiff.txt | grep -i "^- " | wc -l)
+          export NEW_LINES=$(cat gitdiff.txt | grep -i "^+ " | wc -l)
+          export NEW_LINES_WITH_EMPTY_PRS=$(cat gitdiff.txt | grep -i "^+ .*prereleasesuffix:\s*$" | wc -l)
+
+          echo "OLD LINES ($OLD_LINES)"
+          cat gitdiff.txt | grep -i "^- "
+          echo "---- -------------------- ----"
+          echo "NEW LINES ($NEW_LINES)"
+          cat gitdiff.txt | grep -i "^+ "
+          echo "---- -------------------- ----"
+          echo "NEW LINES WITH EMPTY PRERELEASESUFFIX ($NEW_LINES_WITH_EMPTY_PRS)"
+          cat gitdiff.txt | grep -i "^+ .*prereleasesuffix:\s*$" 
+          echo "---- -------------------- ----"
+          if [ "$OLD_LINES" != "$NEW_LINES" ]
+          then
+            echo "Number of old lines and new lines differs"
+          else
+            if [ "$NEW_LINES" != "$NEW_LINES_WITH_EMPTY_PRS" ]
+            then
+              echo "not all new lines are empty prereleasesuffixes"
+            else
+              echo "detected only prerelease suffix removals in changed files"
+              echo "SKIPPING TESTS"
+              echo "SKIPTESTS=1" >> $GITHUB_OUTPUT
+            fi
+          fi
+        fi 
 
 
   run_tests_job:
