@@ -15,15 +15,16 @@ jobs:
       SKIPTESTS: ${{ steps.check_skiptests_msg.outputs.SKIPTESTS }}
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         ref: ${{ github.event.pull_request.head.ref }}
         repository: ${{ github.event.pull_request.head.repo.full_name }}
-    - name: Check for [skip tests] in Message
+    - name: check last changed files
       id: check_skiptests_msg
       run: |
-        ls -la
-        cat values.yaml
+        set +xv
+        echo "ref: ${{ github.event.pull_request.head.ref }}"
+        echo "repository: ${{ github.event.pull_request.head.repo.full_name }}"
         git log -2
 
 
