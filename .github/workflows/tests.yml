@@ -34,7 +34,8 @@ jobs:
           echo "---- DIFF FROM LAST COMMIT ----"
           git diff -w -U0 --color=always HEAD~1
           echo "---- --------------------- ----"
-
+          
+          git diff -w -U0 --color=never HEAD~1 > gitdiff.txt
           export OLD_LINES=$(cat gitdiff.txt | grep -i "^- " | wc -l)
           export NEW_LINES=$(cat gitdiff.txt | grep -i "^+ " | wc -l)
           export NEW_LINES_WITH_EMPTY_PRS=$(cat gitdiff.txt | grep -i "^+ .*prereleasesuffix:\s*$" | wc -l)
