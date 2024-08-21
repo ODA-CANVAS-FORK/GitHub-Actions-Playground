@@ -19,7 +19,7 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.ref }}
         repository: ${{ github.event.pull_request.head.repo.full_name }}
-        fetch-depth: 1    # is 2 needed for getting the diff for the last commit?
+        fetch-depth: 2    # this is needed for getting the diff of the last commit
 
     - name: check if last commit contains only prerelease suffix removals 
       id: check_prereleasesuffixremoval
