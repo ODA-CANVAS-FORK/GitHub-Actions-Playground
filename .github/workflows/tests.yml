@@ -19,21 +19,21 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.ref }}
         repository: ${{ github.event.pull_request.head.repo.full_name }}
-        fetch-depth: 2    # this is needed for getting the diff for the last commit
+        fetch-depth: 1    # is 2 needed for getting the diff for the last commit?
 
     - name: check if last commit contains only prerelease suffix removals 
       id: check_prereleasesuffixremoval
       shell: bash
       run: |
+        echo "---- CHANGED FILES ----"
+        git diff --name-only HEAD~1
         export CHANGED_FILES=$(git diff --name-only HEAD~1)
-        echo CHANGED FILES:
-        echo $CHANGED_FILES
         if [ "$CHANGED_FILES" == "values.yaml" ]
         then
           echo "only values.yaml was changed, checking changes"
-          echo "---- RAW DIFF last commit ----"
+          echo "---- DIFF FROM LAST COMMIT ----"
           git diff -w -U0 --color=always HEAD~1
-          echo "---- -------------------- ----"
+          echo "---- --------------------- ----"
 
           export OLD_LINES=$(cat gitdiff.txt | grep -i "^- " | wc -l)
           export NEW_LINES=$(cat gitdiff.txt | grep -i "^+ " | wc -l)
