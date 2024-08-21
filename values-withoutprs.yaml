@@ -248,8 +248,9 @@ secretsmanagement-operator:
   #audience: "https://container.googleapis.com/v1/projects/tmforum-oda-component-cluster/locations/europe-west3/clusters/ihc-dt"
   
   # INFO=20, DEBUG=10
-  logLevel: 21
+  logLevel: 20
 
+  # plaintext token for HashiCorp Vault. 
   # In the log files a warning will be shown with the encrypted value, which should be used instead of this 
   hvacToken: egalegal
   # encrpyted token (can be found in logfile)
@@ -257,7 +258,6 @@ secretsmanagement-operator:
 
 oda-webhook:
   image: tmforumodacanvas/compcrdwebhook
-  This line is new
   version: 0.8.2
   prereleaseSuffix:
   imagePullPolicy: IfNotPresent

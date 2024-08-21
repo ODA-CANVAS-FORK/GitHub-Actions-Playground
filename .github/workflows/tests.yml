@@ -33,9 +33,12 @@ jobs:
         if [ "$CHANGED_FILES" == "values.yaml" ]
         then
           echo "only values.yaml were changed"
-          echo ---- diffs ----
-          git diff -w HEAD~1 -U0 --raw
-          echo ---- ----- ----
+          echo ---- RAW DIFF last commit ----
+          git diff -w -U0 --color=always HEAD~1
+          git diff -w -U0 --color=never HEAD~1 
+          echo ---- OLD LINES ($ADD) ----
+          echo ---- NEW LINES ($REM) ----
+          echo ---- -------------------- ----
         fi 
 
         echo "SKIPPING TESTS"
