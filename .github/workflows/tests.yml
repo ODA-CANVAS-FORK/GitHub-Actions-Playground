@@ -19,25 +19,19 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.ref }}
         repository: ${{ github.event.pull_request.head.repo.full_name }}
+        fetch-depth: 2
     - name: check last changed files
       id: check_skiptests_msg
       run: |
-        set +xv
         echo "ref: ${{ github.event.pull_request.head.ref }}"
         echo "repository: ${{ github.event.pull_request.head.repo.full_name }}"
+        
+        echo "--- git log -2 ---"
         git log -2
+        echo "--- ---------- ---"
 
-
-        message=$(git log -1 --format=oneline --pretty=format:"%s")
-        echo "GIT COMMIT MESSAGE: $message"
-        if echo $message | grep "\[skip tests\]" >/dev/null
-        then
-          echo "SKIPPING TESTS"
-          echo "SKIPTESTS=1" >> $GITHUB_OUTPUT
-        else
-          echo "EXECUTING TESTS"
-          echo "SKIPTESTS=" >> $GITHUB_OUTPUT
-        fi
+        echo "SKIPPING TESTS"
+        echo "SKIPTESTS=1" >> $GITHUB_OUTPUT
 
 
   run_tests_job:
